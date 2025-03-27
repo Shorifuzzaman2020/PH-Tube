@@ -4,14 +4,23 @@ function removeActiveClass(){
         btn.classList.remove("active");
     }
 }
+const showLoader=()=>{
+    document.getElementById("loader").classList.remove("hidden");
+    document.getElementById("video-container").classList.add("hidden");
+}
+const hideLoader=()=>{
+    document.getElementById("loader").classList.add("hidden");
+    document.getElementById("video-container").classList.remove("hidden");
+}
 
 function loadCategory(){
     fetch("https://openapi.programming-hero.com/api/phero-tube/categories")
     .then((res)=>res.json())
     .then((data)=>displayCategory(data.categories));
 }
-function loadVideos(){
-    fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function loadVideos(searchText=""){
+    showLoader();
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res)=>res.json())
     .then((data)=>{
         removeActiveClass();
@@ -21,6 +30,7 @@ function loadVideos(){
     })
 }
 const loadCategoryVideos=(id)=>{
+    showLoader();
     const url=`https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
     fetch(url)
     .then((res)=>res.json())
@@ -102,8 +112,12 @@ const displayVideo=(videos)=>{
              </div>
              <div class="intro">
                 <h2 class="text-sm font-semibold mb-3">${video.title}</h2>
-                <p class="text-sm text-gray-400 flex gap-1 mb-3">${video.authors[0].profile_name} <img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=SRJUuaAShjVD&format=png&color=000000" alt=""></p>
+                <p class="text-sm text-gray-400 flex gap-1 mb-3">
+                ${video.authors[0].profile_name}
+                ${video.authors[0].verified == true? `<img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=SRJUuaAShjVD&format=png&color=000000" alt="">` : ""}
+                </p>
                 <p class="text-sm text-gray-400">${video.others.views} views</p>
+                
              </div>
         </div>
              <button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-block">Show Details</button>
@@ -111,5 +125,10 @@ const displayVideo=(videos)=>{
         `;
         videoContainer.append(videoCart);
     });
+    hideLoader();
 }
+document.getElementById("search-input").addEventListener("keyup",(e)=>{
+    const input=e.target.value;
+    loadVideos(input);
+})
 loadCategory();
