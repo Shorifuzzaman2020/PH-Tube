@@ -18,16 +18,16 @@ const loadCategoryVideos=(id)=>{
 function displayCategory(categories){
     const categoryContainer=document.getElementById("category-container");
     for(let cat of categories){
-        console.log(cat);
         const categoryDiv=document.createElement("div");
         categoryDiv.innerHTML=`
-        <button onclick="loadCategoryVideos(${category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+        <button onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
         `;
         categoryContainer.append(categoryDiv);
     }
 }
 const displayVideo=(videos)=>{
     const videoContainer=document.getElementById("video-container");
+    videoContainer.innerHTML="";
     videos.forEach(video => {
         const videoCart=document.createElement("div");
         videoCart.innerHTML=`
@@ -47,7 +47,7 @@ const displayVideo=(videos)=>{
                   </div>
              </div>
              <div class="intro">
-                <h2 class="text-sm font-semibold mb-3">Midnight Serenade</h2>
+                <h2 class="text-sm font-semibold mb-3">${video.title}</h2>
                 <p class="text-sm text-gray-400 flex gap-1 mb-3">${video.authors[0].profile_name} <img class="w-5 h-5" src="https://img.icons8.com/?size=100&id=SRJUuaAShjVD&format=png&color=000000" alt=""></p>
                 <p class="text-sm text-gray-400">${video.others.views} views</p>
              </div>
