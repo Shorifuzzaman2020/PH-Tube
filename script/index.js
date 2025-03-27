@@ -28,6 +28,14 @@ function displayCategory(categories){
 const displayVideo=(videos)=>{
     const videoContainer=document.getElementById("video-container");
     videoContainer.innerHTML="";
+    if(videos.length==0){
+        videoContainer.innerHTML=`
+        <div class="col-span-full text-center flex flex-col justify-center items-center py-20">
+            <img class="w-300px" src="./assets/Icon.png" alt="">
+            <h2 class="text-2xl font-bold my-6">Oops!! Sorry, There is no content here</h2>
+        </div>
+        `
+    }
     videos.forEach(video => {
         const videoCart=document.createElement("div");
         videoCart.innerHTML=`
